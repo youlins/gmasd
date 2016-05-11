@@ -13,7 +13,7 @@ func main() {
 
 	fmt.Printf("Hello gmasd %s\n", VERSION)
 
-	ap := access_point.New("coderA")
+	ap := access_point.New("MT")
 	ap.Listen(8000)
 	ap.Start()
 }

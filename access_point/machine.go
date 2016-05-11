@@ -4,6 +4,7 @@ import (
 	"net"
 	"sync/atomic"
 	"fmt"
+	"../coder"
 )
 
 type machine struct {
@@ -36,6 +37,8 @@ func (m* machine)readLoop() {
 
 	buffer := make([]byte, 1501)
 
+	c  := coder.CreateCoder(m.ap.coder);
+
 	for {
 		n, err := m.conn.Read(buffer[0:1500])
 		buffer[n] = 0;
@@ -44,7 +47,7 @@ func (m* machine)readLoop() {
 			return
 		}
 
-		if err := m.parse(buffer[:n]); err != nil {
+		if err := c.Parse(buffer[:n]); err != nil {
 				m.close()
 			return
 		}
@@ -52,10 +55,10 @@ func (m* machine)readLoop() {
 	m.close()
 }
 
-func (m *machine) parse(buffer []byte) error {
-	fmt.Printf("size：%d, %s\n", len(buffer), string(buffer));
-	return nil
-}
+//func (m *machine) parse(buffer []byte) error {
+//	fmt.Printf("size：%d, %s\n", len(buffer), string(buffer));
+//	return nil
+//}
 
 func (c *machine) close() {
 	c.conn.Close();
